@@ -12,11 +12,16 @@ input CreateOrderInput {
     quantity: Int!
 }
 
+input Page {
+    pageNumber: Int!
+    pageSize: Int!
+}
+
 type Customer {
     id: ID!
     name: String!
     email: String!
-    orders: [Order]
+    orders(status:String, page:Page): [Order]
 }
 
 type Order {
