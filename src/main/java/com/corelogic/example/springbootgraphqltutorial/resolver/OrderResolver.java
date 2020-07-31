@@ -21,7 +21,7 @@ public class OrderResolver implements GraphQLResolver<Order> {
   public Customer customer(Order order) {
     return customerRepository
         .findById(order.getCustomer().getId())
-        .map(this::modelToGraphQL)
+        .map(OrderResolver::modelToGraphQL)
         .orElse(null);
   }
 
@@ -32,6 +32,14 @@ public class OrderResolver implements GraphQLResolver<Order> {
         .orElse(null);
   }
 
+  public static Customer modelToGraphQL(CustomerEntity customerEntity) {
+    Customer customer = new Customer();
+    customer.setEmail(customerEntity.getEmail());
+    customer.setId(customerEntity.getId());
+    customer.setName(customerEntity.getName());
+    return customer;
+  }
+
   private Product modelToGraphQL(ProductEntity productEntity) {
     Product product = new Product();
     product.setDescription(productEntity.getDescription());
@@ -39,13 +47,5 @@ public class OrderResolver implements GraphQLResolver<Order> {
     product.setId(productEntity.getId());
     product.setPrice(productEntity.getPrice());
     return product;
-  }
-
-  private Customer modelToGraphQL(CustomerEntity customerEntity) {
-    Customer customer = new Customer();
-    customer.setEmail(customerEntity.getEmail());
-    customer.setId(customerEntity.getId());
-    customer.setName(customerEntity.getName());
-    return customer;
   }
 }

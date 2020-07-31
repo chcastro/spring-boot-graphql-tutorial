@@ -6,6 +6,10 @@ type Mutation {
     createOrder(order: CreateOrderInput!): Order!
 }
 
+type Subscription {
+    allCustomers: Customer!
+}
+
 input CreateOrderInput {
     customerId: ID!
     productId: ID!
