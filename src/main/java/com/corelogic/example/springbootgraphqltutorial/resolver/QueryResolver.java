@@ -13,10 +13,10 @@ public class QueryResolver implements GraphQLQueryResolver {
   private final CustomerRepository customerRepository;
 
   public Customer customerById(Long id) {
-    return customerRepository.findById(id).map(this::modelToGraphQL).orElse(null);
+    return customerRepository.findById(id).map(QueryResolver::modelToGraphQL).orElse(null);
   }
 
-  private Customer modelToGraphQL(CustomerEntity customerModel) {
+  public static Customer modelToGraphQL(CustomerEntity customerModel) {
     Customer customer = new Customer();
     customer.setId(customerModel.getId());
     customer.setName(customerModel.getName());

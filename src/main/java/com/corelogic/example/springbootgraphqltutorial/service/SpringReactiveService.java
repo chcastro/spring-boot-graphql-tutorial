@@ -4,7 +4,9 @@ import com.corelogic.example.springbootgraphqltutorial.dto.Customer;
 import com.corelogic.example.springbootgraphqltutorial.repository.entity.CustomerEntity;
 import com.corelogic.example.springbootgraphqltutorial.repository.repository.CustomerRepository;
 import com.corelogic.example.springbootgraphqltutorial.resolver.OrderResolver;
+import com.corelogic.example.springbootgraphqltutorial.resolver.QueryResolver;
 import lombok.AllArgsConstructor;
+import org.reactivestreams.Publisher;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -16,11 +18,11 @@ import java.util.List;
 public class SpringReactiveService {
   private final CustomerRepository customerRepository;
 
-  public Flux<Customer> allCustomers() {
+  public Publisher<Customer> allCustomers() {
     List<CustomerEntity> customers = customerRepository.findAll();
     Flux<CustomerEntity> customerEntityFlux = Flux.fromStream(customers.stream());
-    Flux<Long> durationFlux = Flux.interval(Duration.ofSeconds(10));
+    Flux<Long> durationFlux = Flux.interval(Duration.ofSeconds(5));
     return Flux.zip(customerEntityFlux, durationFlux)
-        .map(objects -> OrderResolver.modelToGraphQL(objects.getT1()));
+        .map(objects -> QueryResolver.modelToGraphQL(objects.getT1()));
   }
 }

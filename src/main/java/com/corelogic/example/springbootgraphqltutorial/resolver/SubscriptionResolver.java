@@ -23,6 +23,6 @@ public class SubscriptionResolver implements GraphQLSubscriptionResolver {
     Flux<CustomerEntity> customerEntityFlux = Flux.fromStream(customers.stream());
     Flux<Long> durationFlux = Flux.interval(Duration.ofSeconds(5));
     return Flux.zip(customerEntityFlux, durationFlux)
-        .map(objects -> OrderResolver.modelToGraphQL(objects.getT1()));
+        .map(objects -> QueryResolver.modelToGraphQL(objects.getT1()));
   }
 }
